@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../app/constants/app_constants.dart';
+import '../../../../app/router/app_router.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../controllers/welcome_controller.dart';
@@ -8,7 +10,7 @@ import '../widgets/welcome_actions_widget.dart';
 import '../widgets/welcome_illustration_widget.dart';
 import '../widgets/welcome_text_widget.dart';
 
-/// Pixel-perfect & responsive Welcome Screen supporting all screen sizes.
+/// Pixel-perfect & responsive Welcome Screen implementation following Clean Architecture rules.
 class WelcomePage extends ConsumerWidget {
   const WelcomePage({super.key});
 
@@ -42,7 +44,7 @@ class WelcomePage extends ConsumerWidget {
                           children: [
                             const Spacer(flex: 1),
 
-                            // Illustration Artwork (Scales dynamically)
+                            // Illustration Artwork
                             const WelcomeIllustrationWidget(),
 
                             const SizedBox(height: AppSpacing.md),
@@ -54,9 +56,14 @@ class WelcomePage extends ConsumerWidget {
 
                             // Bottom Action Buttons
                             WelcomeActionsWidget(
-                              onCreateDuoPressed: controller.handleCreateDuo,
-                              onAlreadyHaveAccountPressed:
-                                  controller.handleAlreadyHaveAccount,
+                              onCreateDuoPressed: () {
+                                controller.handleCreateDuo();
+                                context.go(AppRoutes.register);
+                              },
+                              onAlreadyHaveAccountPressed: () {
+                                controller.handleAlreadyHaveAccount();
+                                context.go(AppRoutes.login);
+                              },
                               isLoading: state.isLoading,
                             ),
 

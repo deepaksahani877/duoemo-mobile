@@ -10,6 +10,7 @@ class AppButton extends StatelessWidget {
   final bool isLoading;
   final double? width;
   final double height;
+  final List<Color>? gradientColors;
 
   const AppButton({
     super.key,
@@ -18,27 +19,31 @@ class AppButton extends StatelessWidget {
     this.isLoading = false,
     this.width,
     this.height = 58.0,
+    this.gradientColors,
   });
 
   @override
   Widget build(BuildContext context) {
+    final colors = gradientColors ??
+        const [
+          AppColors.buttonPrimaryBg,
+          AppColors.buttonPrimaryBgDark,
+        ];
+
     return SizedBox(
       width: width ?? double.infinity,
       height: height,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppRadius.pill),
-          gradient: const LinearGradient(
+          gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              AppColors.buttonPrimaryBg,
-              AppColors.buttonPrimaryBgDark,
-            ],
+            colors: colors,
           ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.buttonPrimaryBg.withAlpha(45),
+              color: colors.first.withAlpha(45),
               blurRadius: 16.0,
               offset: const Offset(0, 6),
             ),

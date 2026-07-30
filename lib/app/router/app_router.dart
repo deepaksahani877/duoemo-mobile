@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import '../../features/authentication/presentation/pages/login_page.dart';
+import '../../features/authentication/presentation/pages/register_page.dart';
 import '../../features/welcome/presentation/pages/welcome_page.dart';
 
 /// Centralized route definitions per instruction.md standards.
@@ -6,6 +8,8 @@ class AppRoutes {
   AppRoutes._();
 
   static const String welcome = '/';
+  static const String login = '/login';
+  static const String register = '/register';
 }
 
 final GoRouter appRouter = GoRouter(
@@ -14,6 +18,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.welcome,
       builder: (context, state) => const WelcomePage(),
+    ),
+    GoRoute(
+      path: AppRoutes.login,
+      builder: (context, state) => const LoginPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.register,
+      builder: (context, state) => const RegisterPage(),
     ),
   ],
 );

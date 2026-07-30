@@ -1,5 +1,10 @@
 import 'package:get_it/get_it.dart';
 import '../../core/services/logger_service.dart';
+import '../../features/authentication/data/datasource/auth_local_datasource.dart';
+import '../../features/authentication/data/repository/auth_repository_impl.dart';
+import '../../features/authentication/domain/repository/auth_repository.dart';
+import '../../features/authentication/domain/usecase/login_usecase.dart';
+import '../../features/authentication/domain/usecase/register_usecase.dart';
 import '../../features/welcome/data/datasource/welcome_local_datasource.dart';
 import '../../features/welcome/data/repository/welcome_repository_impl.dart';
 import '../../features/welcome/domain/repository/welcome_repository.dart';
@@ -10,20 +15,46 @@ final getIt = GetIt.instance;
 /// Global dependency injection setup per instruction.md standards.
 Future<void> setupDependencies() async {
   // Services
-  getIt.registerLazySingleton<LoggerService>(() => LoggerService());
+  if (!getIt.isRegistered<LoggerService>()) {
+    getIt.registerLazySingleton<LoggerService>(() => LoggerService());
+  }
 
-  // Data sources
-  getIt.registerLazySingleton<WelcomeLocalDataSource>(
-    () => WelcomeLocalDataSourceImpl(),
-  );
+  // Welcome Feature
+  if (!getIt.isRegistered<WelcomeLocalDataSource>()) {
+    getIt.registerLazySingleton<WelcomeLocalDataSource>(
+      () => WelcomeLocalDataSourceImpl(),
+    );
+  }
+  if (!getIt.isRegistered<WelcomeRepository>()) {
+    getIt.registerLazySingleton<WelcomeRepository>(
+      () => WelcomeRepositoryImpl(getIt<WelcomeLocalDataSource>()),
+    );
+  }
+  if (!getIt.isRegistered<GetWelcomeConfigUseCase>()) {
+    getIt.registerLazySingleton<GetWelcomeConfigUseCase>(
+      () => GetWelcomeConfigUseCase(getIt<WelcomeRepository>()),
+    );
+  }
 
-  // Repositories
-  getIt.registerLazySingleton<WelcomeRepository>(
-    () => WelcomeRepositoryImpl(getIt<WelcomeLocalDataSource>()),
-  );
-
-  // Use cases
-  getIt.registerLazySingleton<GetWelcomeConfigUseCase>(
-    () => GetWelcomeConfigUseCase(getIt<WelcomeRepository>()),
-  );
+  // Authentication Feature
+  if (!getIt.isRegistered<AuthLocalDataSource>()) {
+    getIt.registerLazySingleton<AuthLocalDataSource>(
+      () => AuthLocalDataSourceImpl(),
+    );
+  }
+  if (!getIt.isRegistered<AuthRepository>()) {
+    getIt.registerLazySingleton<AuthRepository>(
+      () => AuthRepositoryImpl(getIt<AuthLocalDataSource>()),
+    );
+  }
+  if (!getIt.isRegistered<LoginUseCase>()) {
+    getIt.registerLazySingleton<LoginUseCase>(
+      () => LoginUseCase(getIt<AuthRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<RegisterUseCase>()) {
+    getIt.registerLazySingleton<RegisterUseCase>(
+      () => RegisterUseCase(getIt<AuthRepository>()),
+    );
+  }
 }
