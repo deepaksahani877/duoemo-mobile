@@ -8,7 +8,7 @@ import '../widgets/welcome_actions_widget.dart';
 import '../widgets/welcome_illustration_widget.dart';
 import '../widgets/welcome_text_widget.dart';
 
-/// Pixel-perfect Welcome Screen implementation following Clean Architecture rules.
+/// Pixel-perfect & responsive Welcome Screen supporting all screen sizes.
 class WelcomePage extends ConsumerWidget {
   const WelcomePage({super.key});
 
@@ -20,42 +20,56 @@ class WelcomePage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
       body: SafeArea(
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: AppConstants.maxContentWidth,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.lg,
-              ),
-              child: Column(
-                children: [
-                  const Spacer(flex: 1),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: IntrinsicHeight(
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxWidth: AppConstants.maxContentWidth,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
+                        ),
+                        child: Column(
+                          children: [
+                            const Spacer(flex: 1),
 
-                  // Illustration Artwork
-                  const WelcomeIllustrationWidget(),
+                            // Illustration Artwork (Scales dynamically)
+                            const WelcomeIllustrationWidget(),
 
-                  const SizedBox(height: AppSpacing.md),
+                            const SizedBox(height: AppSpacing.md),
 
-                  // Brand & Typography Block
-                  const WelcomeTextWidget(),
+                            // Brand & Typography Block
+                            const WelcomeTextWidget(),
 
-                  const Spacer(flex: 2),
+                            const Spacer(flex: 2),
 
-                  // Bottom Action Buttons
-                  WelcomeActionsWidget(
-                    onCreateDuoPressed: controller.handleCreateDuo,
-                    onAlreadyHaveAccountPressed:
-                        controller.handleAlreadyHaveAccount,
-                    isLoading: state.isLoading,
+                            // Bottom Action Buttons
+                            WelcomeActionsWidget(
+                              onCreateDuoPressed: controller.handleCreateDuo,
+                              onAlreadyHaveAccountPressed:
+                                  controller.handleAlreadyHaveAccount,
+                              isLoading: state.isLoading,
+                            ),
+
+                            const SizedBox(height: AppSpacing.lg),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-
-                  const SizedBox(height: AppSpacing.lg),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );
