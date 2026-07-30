@@ -12,7 +12,7 @@ import '../controllers/login_controller.dart';
 import '../widgets/login_form_widget.dart';
 import '../widgets/login_header_widget.dart';
 
-/// Pixel-perfect Login Screen implementation following Clean Architecture rules.
+/// Login Screen implementation with robust form validation following Clean Architecture.
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
@@ -21,6 +21,7 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
 
@@ -38,8 +39,35 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     super.dispose();
   }
 
+  void _handleSignIn(LoginController controller) {
+    if (_formKey.currentState?.validate() ?? false) {
+      controller.login(
+        _emailController.text.trim(),
+        _passwordController.text,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    ref.listen<LoginState>(loginControllerProvider, (previous, next) {
+      if (next.errorMessage != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(next.errorMessage!),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      } else if (next.isSuccess) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Sign in successful! Welcome back.'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    });
+
     final state = ref.watch(loginControllerProvider);
     final controller = ref.read(loginControllerProvider.notifier);
 
@@ -73,8 +101,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
                             const SizedBox(height: AppSpacing.lg),
 
-                            // Form Block (Inputs & Sign In Button)
+                            // Form Block (Inputs, Validation & Sign In Button)
                             LoginFormWidget(
+                              formKey: _formKey,
                               emailController: _emailController,
                               passwordController: _passwordController,
                               isPasswordVisible: state.isPasswordVisible,
@@ -88,12 +117,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   ),
                                 );
                               },
-                              onSignInPressed: () {
-                                controller.login(
-                                  _emailController.text,
-                                  _passwordController.text,
-                                );
-                              },
+                              onSignInPressed: () => _handleSignIn(controller),
                             ),
 
                             const SizedBox(height: AppSpacing.xl),
@@ -104,7 +128,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             const Spacer(),
                             const SizedBox(height: AppSpacing.lg),
 
-                            // Bottom Navigation Link to Register Screen (Wrap for small screens)
+                            // Bottom Navigation Link to Register Screen
                             Wrap(
                               alignment: WrapAlignment.center,
                               crossAxisAlignment: WrapCrossAlignment.center,

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
-/// App-wide structured logging service per instruction.md standards.
+/// App-wide structured logging service.
 class LoggerService {
   late final Logger _logger;
 

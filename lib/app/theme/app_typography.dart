@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
-/// Centralized typography definitions matching the pixel-perfect design.
+/// Centralized typography definitions.
 class AppTypography {
   AppTypography._();
 

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'app_colors.dart';
 import 'app_typography.dart';
 
-/// App theme builder for light and dark modes per instruction.md standards.
+/// App theme builder for light and dark modes.
 class AppTheme {
   AppTheme._();
 

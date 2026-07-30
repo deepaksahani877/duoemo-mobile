@@ -12,7 +12,7 @@ import '../../features/welcome/domain/usecase/get_welcome_config.dart';
 
 final getIt = GetIt.instance;
 
-/// Global dependency injection setup per instruction.md standards.
+/// Global dependency injection setup.
 Future<void> setupDependencies() async {
   // Services
   if (!getIt.isRegistered<LoggerService>()) {

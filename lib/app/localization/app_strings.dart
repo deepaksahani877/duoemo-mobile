@@ -1,4 +1,4 @@
-/// Centralized localized string resource provider per instruction.md standards.
+/// Centralized localized string resource provider.
 class AppStrings {
   AppStrings._();
 
@@ -38,4 +38,17 @@ class AppStrings {
   static const String signUpButton = 'Sign up';
   static const String alreadyHaveAccountPrompt = 'Already have an account? ';
   static const String signInLink = 'Sign in';
+
+  // Validation Error Messages
+  static const String emailRequired = 'Please enter your email address';
+  static const String emailInvalid = 'Please enter a valid email address';
+  static const String passwordRequired = 'Please enter your password';
+  static const String passwordTooShort = 'Password must be at least 6 characters';
+  static const String fullNameRequired = 'Please enter your full name';
+  static const String fullNameTooShort = 'Name must be at least 2 characters';
+  static const String confirmPasswordRequired = 'Please confirm your password';
+  static const String passwordsDoNotMatch = 'Passwords do not match';
+  static const String dateOfBirthRequired = 'Please select your date of birth';
+  static const String termsAgreementRequired =
+      'Please agree to the Terms of Service & Privacy Policy';
 }

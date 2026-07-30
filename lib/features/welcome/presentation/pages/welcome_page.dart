@@ -10,7 +10,7 @@ import '../widgets/welcome_actions_widget.dart';
 import '../widgets/welcome_illustration_widget.dart';
 import '../widgets/welcome_text_widget.dart';
 
-/// Pixel-perfect & responsive Welcome Screen implementation following Clean Architecture rules.
+/// Welcome Screen implementation following Clean Architecture rules.
 class WelcomePage extends ConsumerWidget {
   const WelcomePage({super.key});
 

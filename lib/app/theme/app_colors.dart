@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Centralized color palette for the app per instruction.md standards.
+/// Centralized color palette for the app.
 class AppColors {
   AppColors._();
 

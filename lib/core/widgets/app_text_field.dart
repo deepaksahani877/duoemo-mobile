@@ -3,7 +3,7 @@ import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_typography.dart';
 
-/// Reusable input text field component matching the design spec.
+/// Input text field component.
 class AppTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String hintText;

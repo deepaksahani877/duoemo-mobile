@@ -13,7 +13,7 @@ import '../controllers/register_controller.dart';
 import '../widgets/register_form_widget.dart';
 import '../widgets/register_header_widget.dart';
 
-/// Pixel-perfect Register Screen implementation following Clean Architecture rules.
+/// Register Screen implementation with robust form validation following Clean Architecture.
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
 
@@ -22,6 +22,7 @@ class RegisterPage extends ConsumerStatefulWidget {
 }
 
 class _RegisterPageState extends ConsumerState<RegisterPage> {
+  final _formKey = GlobalKey<FormState>();
   late final TextEditingController _fullNameController;
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
@@ -71,11 +72,55 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     if (picked != null) {
       final formattedDate = DateFormat('dd / MM / yyyy').format(picked);
       _dobController.text = formattedDate;
+      // Re-trigger form field validation for date of birth
+      _formKey.currentState?.validate();
     }
+  }
+
+  void _handleSignUp(RegisterController controller, RegisterState state) {
+    final isFormValid = _formKey.currentState?.validate() ?? false;
+    if (!isFormValid) {
+      return;
+    }
+
+    if (!state.isAgreedToTerms) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(AppStrings.termsAgreementRequired),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+      return;
+    }
+
+    controller.register(
+      fullName: _fullNameController.text.trim(),
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+      dateOfBirth: _dobController.text,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<RegisterState>(registerControllerProvider, (previous, next) {
+      if (next.errorMessage != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(next.errorMessage!),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      } else if (next.isSuccess) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Account created successfully! Welcome to Duoemo.'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    });
+
     final state = ref.watch(registerControllerProvider);
     final controller = ref.read(registerControllerProvider.notifier);
 
@@ -119,6 +164,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
                             // Form Fields & Sign Up Button
                             RegisterFormWidget(
+                              formKey: _formKey,
                               fullNameController: _fullNameController,
                               emailController: _emailController,
                               passwordController: _passwordController,
@@ -138,14 +184,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                                   controller.toggleTermsAgreement,
                               onSelectDateOfBirth: () =>
                                   _selectDateOfBirth(context),
-                              onSignUpPressed: () {
-                                controller.register(
-                                  fullName: _fullNameController.text,
-                                  email: _emailController.text,
-                                  password: _passwordController.text,
-                                  dateOfBirth: _dobController.text,
-                                );
-                              },
+                              onSignUpPressed: () =>
+                                  _handleSignUp(controller, state),
                             ),
 
                             const SizedBox(height: AppSpacing.xl),
@@ -156,7 +196,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             const Spacer(),
                             const SizedBox(height: AppSpacing.lg),
 
-                            // Bottom Navigation Link to Login Screen (Wrap for small screens)
+                            // Bottom Navigation Link to Login Screen
                             Wrap(
                               alignment: WrapAlignment.center,
                               crossAxisAlignment: WrapCrossAlignment.center,

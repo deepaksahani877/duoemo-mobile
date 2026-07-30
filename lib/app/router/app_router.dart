@@ -3,7 +3,7 @@ import '../../features/authentication/presentation/pages/login_page.dart';
 import '../../features/authentication/presentation/pages/register_page.dart';
 import '../../features/welcome/presentation/pages/welcome_page.dart';
 
-/// Centralized route definitions per instruction.md standards.
+/// Centralized route definitions.
 class AppRoutes {
   AppRoutes._();
 

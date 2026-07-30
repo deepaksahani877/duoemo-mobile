@@ -1,4 +1,4 @@
-/// Base class for typed failures per instruction.md error handling guidelines.
+/// Base class for typed failures for error handling.
 abstract class Failure {
   final String message;
   final dynamic cause;

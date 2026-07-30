@@ -4,7 +4,7 @@ import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_typography.dart';
 
-/// Reusable social login buttons row per instruction.md standards.
+/// Social login buttons row.
 class SocialLoginRow extends StatelessWidget {
   final VoidCallback? onGooglePressed;
   final VoidCallback? onApplePressed;
