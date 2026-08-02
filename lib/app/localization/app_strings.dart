@@ -52,6 +52,45 @@ class AppStrings {
   static const String termsAgreementRequired =
       'Please agree to the Terms of Service & Privacy Policy';
 
+  // Forgot Password Screen
+  static const String forgotPasswordTaglineLine1 = 'REKINDLE MEMORIES,';
+  static const String forgotPasswordTaglineLine2 = 'BUILD A CONNECTION.';
+  static const String forgotPasswordHeading = 'Forgot Password?';
+  static const String forgotPasswordSubtitle =
+      "Don’t worry! It happens. Enter your registered email and we’ll send you reset instructions.";
+  static const String emailPlaceholder = 'Enter your registered email';
+  static const String sendResetLinkButton = 'Send Reset Link';
+  static const String rememberPasswordPrompt = 'Remember your password? ';
+  static const String loginLink = 'Login';
+
+  // OTP Verification Screen
+  static const String verifyOtpHeading = 'Verify OTP';
+  static const String otpSentSubtitle = 'We’ve sent a 6-digit code to';
+  static const String dummyUserEmail = 'sar***@gmail.com';
+  static const String didntReceiveCodePrompt = 'Didn’t receive the code?';
+  static const String resendCodeIn = 'Resend code in ';
+  static const String otpTimerDefault = '00:45';
+  static const String securityBannerTitle = 'Your security is important to us.';
+  static const String securityBannerSub =
+      'Please don’t share your OTP with anyone.';
+  static const String otpIncompleteError =
+      'Please enter the complete 6-digit OTP code';
+
+  // Create New Password Screen
+  static const String createNewPasswordHeading = 'Create New Password';
+  static const String createNewPasswordSubtitle =
+      'Your new password must be different from previous passwords.';
+  static const String newPasswordLabel = 'New Password';
+  static const String strengthStrong = 'Strong';
+  static const String ruleAtLeast8Chars = 'At least 8 characters';
+  static const String ruleUppercaseLowercase =
+      'Include uppercase & lowercase letters';
+  static const String ruleNumberSpecialChar =
+      'Include a number or special character';
+  static const String resetPasswordButton = 'Reset Password';
+  static const String passwordResetSuccessMessage =
+      'Password reset successfully! Please sign in with your new password.';
+
   // Home Screen
   static const String goodEveningGreeting = 'Good evening,';
   static const String userNameSuraj = 'Suraj ✨';

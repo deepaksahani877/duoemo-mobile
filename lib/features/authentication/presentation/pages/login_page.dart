@@ -12,7 +12,7 @@ import '../controllers/login_controller.dart';
 import '../widgets/login_form_widget.dart';
 import '../widgets/login_header_widget.dart';
 
-/// Login Screen implementation with dummy login redirect to Home screen.
+/// Login Screen implementation
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
@@ -125,11 +125,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 onTogglePasswordVisibility:
                                     controller.togglePasswordVisibility,
                                 onForgotPasswordPressed: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Password reset link sent!'),
-                                    ),
-                                  );
+                                  context.push(AppRoutes.forgotPassword);
                                 },
                                 onSignInPressed: () => _handleSignIn(controller),
                               ),

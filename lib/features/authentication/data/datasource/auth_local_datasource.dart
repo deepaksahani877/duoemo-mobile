@@ -9,6 +9,9 @@ abstract class AuthLocalDataSource {
     String password,
     String dateOfBirth,
   );
+  Future<void> requestPasswordReset(String email);
+  Future<bool> verifyOtp(String email, String otp);
+  Future<void> resetPassword(String email, String newPassword);
 }
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
@@ -34,5 +37,24 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       fullName: fullName,
       dateOfBirth: dateOfBirth,
     );
+  }
+
+  @override
+  Future<void> requestPasswordReset(String email) async {
+    // Dummy request password reset call
+    await Future.delayed(const Duration(milliseconds: 300));
+  }
+
+  @override
+  Future<bool> verifyOtp(String email, String otp) async {
+    // Dummy OTP verification check
+    await Future.delayed(const Duration(milliseconds: 300));
+    return true;
+  }
+
+  @override
+  Future<void> resetPassword(String email, String newPassword) async {
+    // Dummy reset password call
+    await Future.delayed(const Duration(milliseconds: 300));
   }
 }

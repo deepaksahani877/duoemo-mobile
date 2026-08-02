@@ -5,6 +5,9 @@ import '../../features/authentication/data/repository/auth_repository_impl.dart'
 import '../../features/authentication/domain/repository/auth_repository.dart';
 import '../../features/authentication/domain/usecase/login_usecase.dart';
 import '../../features/authentication/domain/usecase/register_usecase.dart';
+import '../../features/authentication/domain/usecase/request_password_reset_usecase.dart';
+import '../../features/authentication/domain/usecase/reset_password_usecase.dart';
+import '../../features/authentication/domain/usecase/verify_otp_usecase.dart';
 import '../../features/home/data/datasource/home_local_datasource.dart';
 import '../../features/home/data/repository/home_repository_impl.dart';
 import '../../features/home/domain/repository/home_repository.dart';
@@ -59,6 +62,21 @@ Future<void> setupDependencies() async {
   if (!getIt.isRegistered<RegisterUseCase>()) {
     getIt.registerLazySingleton<RegisterUseCase>(
       () => RegisterUseCase(getIt<AuthRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<RequestPasswordResetUseCase>()) {
+    getIt.registerLazySingleton<RequestPasswordResetUseCase>(
+      () => RequestPasswordResetUseCase(getIt<AuthRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<VerifyOtpUseCase>()) {
+    getIt.registerLazySingleton<VerifyOtpUseCase>(
+      () => VerifyOtpUseCase(getIt<AuthRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<ResetPasswordUseCase>()) {
+    getIt.registerLazySingleton<ResetPasswordUseCase>(
+      () => ResetPasswordUseCase(getIt<AuthRepository>()),
     );
   }
 

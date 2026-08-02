@@ -13,4 +13,10 @@ abstract class AuthRepository {
     required String password,
     required String dateOfBirth,
   });
+
+  Future<void> requestPasswordReset(String email);
+
+  Future<bool> verifyOtp(String email, String otp);
+
+  Future<void> resetPassword(String email, String newPassword);
 }

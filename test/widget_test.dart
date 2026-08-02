@@ -6,7 +6,10 @@ import 'package:duoemo/app/di/injection.dart';
 import 'package:duoemo/app/localization/app_strings.dart';
 import 'package:duoemo/core/services/logger_service.dart';
 import 'package:duoemo/core/utils/form_validators.dart';
+import 'package:duoemo/features/authentication/presentation/pages/create_new_password_page.dart';
+import 'package:duoemo/features/authentication/presentation/pages/forgot_password_page.dart';
 import 'package:duoemo/features/authentication/presentation/pages/login_page.dart';
+import 'package:duoemo/features/authentication/presentation/pages/otp_verification_page.dart';
 import 'package:duoemo/features/authentication/presentation/pages/register_page.dart';
 import 'package:duoemo/features/home/presentation/pages/home_page.dart';
 import 'package:duoemo/features/welcome/presentation/pages/welcome_page.dart';
@@ -119,6 +122,78 @@ void main() {
 
       expect(find.text(AppStrings.createAccountHeading), findsOneWidget);
       expect(find.text(AppStrings.signUpButton), findsOneWidget);
+    });
+
+    testWidgets('Forgot Password screen renders correctly',
+        (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 3.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      if (!getIt.isRegistered<LoggerService>()) {
+        await setupDependencies();
+      }
+
+      await tester.pumpWidget(
+        const ProviderScope(
+          child: MaterialApp(
+            home: ForgotPasswordPage(),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      expect(find.text(AppStrings.forgotPasswordHeading), findsOneWidget);
+      expect(find.text(AppStrings.sendResetLinkButton), findsOneWidget);
+    });
+
+    testWidgets('OTP Verification screen renders correctly',
+        (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 3.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      if (!getIt.isRegistered<LoggerService>()) {
+        await setupDependencies();
+      }
+
+      await tester.pumpWidget(
+        const ProviderScope(
+          child: MaterialApp(
+            home: OtpVerificationPage(email: AppStrings.dummyUserEmail),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      expect(find.text(AppStrings.verifyOtpHeading), findsOneWidget);
+      expect(find.text(AppStrings.securityBannerTitle), findsOneWidget);
+    });
+
+    testWidgets('Create New Password screen renders correctly',
+        (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 3.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      if (!getIt.isRegistered<LoggerService>()) {
+        await setupDependencies();
+      }
+
+      await tester.pumpWidget(
+        const ProviderScope(
+          child: MaterialApp(
+            home: CreateNewPasswordPage(email: AppStrings.dummyUserEmail),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      expect(find.text(AppStrings.createNewPasswordHeading), findsOneWidget);
+      expect(find.text(AppStrings.resetPasswordButton), findsOneWidget);
     });
 
     testWidgets('Home screen renders correctly', (WidgetTester tester) async {

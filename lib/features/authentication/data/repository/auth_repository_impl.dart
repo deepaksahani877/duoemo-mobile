@@ -32,4 +32,19 @@ class AuthRepositoryImpl implements AuthRepository {
     );
     return dto.toEntity();
   }
+
+  @override
+  Future<void> requestPasswordReset(String email) async {
+    await _localDataSource.requestPasswordReset(email);
+  }
+
+  @override
+  Future<bool> verifyOtp(String email, String otp) async {
+    return await _localDataSource.verifyOtp(email, otp);
+  }
+
+  @override
+  Future<void> resetPassword(String email, String newPassword) async {
+    await _localDataSource.resetPassword(email, newPassword);
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Centralized color palette for the app.
+/// Centralized color palette for the app
 class AppColors {
   AppColors._();
 
@@ -38,8 +38,12 @@ class AppColors {
   static const Color socialButtonBg = Color(0xFFFAF5F0);
   static const Color socialButtonBorder = Color(0xFFE8DFD5);
 
-  // Accents & Checks
+  // Accents & Indicators
   static const Color goldAccent = Color(0xFFC5A880);
   static const Color copperAccent = Color(0xFFBA8158);
   static const Color subtleDivider = Color(0xFFE8E2DC);
+  static const Color successGreen = Color(0xFF558B2F);
+  static const Color strengthGreen = Color(0xFF689F38);
+  static const Color shieldBg = Color(0xFFFFF7F2);
+  static const Color bannerBg = Color(0xFFF9F3EC);
 }
