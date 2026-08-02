@@ -58,11 +58,11 @@ class WelcomePage extends ConsumerWidget {
                             WelcomeActionsWidget(
                               onCreateDuoPressed: () {
                                 controller.handleCreateDuo();
-                                context.go(AppRoutes.register);
+                                context.push(AppRoutes.register);
                               },
                               onAlreadyHaveAccountPressed: () {
                                 controller.handleAlreadyHaveAccount();
-                                context.go(AppRoutes.login);
+                                context.push(AppRoutes.login);
                               },
                               isLoading: state.isLoading,
                             ),

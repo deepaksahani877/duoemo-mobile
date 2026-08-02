@@ -1,4 +1,4 @@
-/// Centralized localized string resource provider.
+/// Centralized localized string resource provider
 class AppStrings {
   AppStrings._();
 
@@ -51,4 +51,33 @@ class AppStrings {
   static const String dateOfBirthRequired = 'Please select your date of birth';
   static const String termsAgreementRequired =
       'Please agree to the Terms of Service & Privacy Policy';
+
+  // Home Screen
+  static const String goodEveningGreeting = 'Good evening,';
+  static const String userNameSuraj = 'Suraj ✨';
+  static const String liveConnectionTitle = 'Live Connection';
+  static const String liveConnectionSub = 'You & Neha';
+  static const String connectedStatus = 'Connected';
+  static const String loveMessagesTitle = 'Love\nMessages';
+  static const String loveMessagesBadge = '12 New';
+  static const String voiceNotesTitle = 'Voice\nNotes';
+  static const String voiceNotesBadge = '5 New';
+  static const String galleryTitle = 'Gallery';
+  static const String galleryBadge = '128 Photos';
+  static const String calendarTitle = 'Calendar';
+  static const String calendarBadge = '7 Events';
+  static const String toDoTitle = 'To-Do';
+  static const String toDoBadge = '3 Tasks';
+  static const String moreTitle = 'More';
+  static const String ourStreakTitle = 'Our Streak';
+  static const String ourStreakSub = 'Keep the flame alive!';
+  static const String ourStreakDays = '23';
+  static const String ourStreakLabel = 'Days';
+  static const String memoryOfDayTitle = 'Memory of the day';
+  static const String memoryOfDayQuote =
+      'Every little moment with you becomes my favorite memory."';
+  static const String navHome = 'Home';
+  static const String navMemories = 'Memories';
+  static const String navChat = 'Chat';
+  static const String navProfile = 'Profile';
 }

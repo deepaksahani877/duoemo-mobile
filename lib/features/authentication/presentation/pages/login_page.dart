@@ -12,7 +12,7 @@ import '../controllers/login_controller.dart';
 import '../widgets/login_form_widget.dart';
 import '../widgets/login_header_widget.dart';
 
-/// Login Screen implementation with robust form validation following Clean Architecture.
+/// Login Screen implementation with dummy login redirect to Home screen.
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
@@ -48,6 +48,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     }
   }
 
+  void _navigateToRegister() {
+    if (context.canPop()) {
+      context.pushReplacement(AppRoutes.register);
+    } else {
+      context.push(AppRoutes.register);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen<LoginState>(loginControllerProvider, (previous, next) {
@@ -59,104 +67,111 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           ),
         );
       } else if (next.isSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Sign in successful! Welcome back.'),
-            backgroundColor: Colors.green,
-          ),
-        );
+        // Redirect to Home screen on successful dummy login
+        context.go(AppRoutes.home);
       }
     });
 
     final state = ref.watch(loginControllerProvider);
     final controller = ref.read(loginControllerProvider.notifier);
 
-    return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
-                ),
-                child: IntrinsicHeight(
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxWidth: AppConstants.maxContentWidth,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.lg,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        if (context.canPop()) {
+          context.pop();
+        } else {
+          context.go(AppRoutes.welcome);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundLight,
+        body: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
+                  ),
+                  child: IntrinsicHeight(
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: AppConstants.maxContentWidth,
                         ),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: AppSpacing.md),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.lg,
+                          ),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: AppSpacing.md),
 
-                            // Top Header Block (Illustration, Logo, Tagline)
-                            const LoginHeaderWidget(),
+                              // Top Header Block (Illustration, Logo, Tagline)
+                              const LoginHeaderWidget(),
 
-                            const SizedBox(height: AppSpacing.lg),
+                              const SizedBox(height: AppSpacing.lg),
 
-                            // Form Block (Inputs, Validation & Sign In Button)
-                            LoginFormWidget(
-                              formKey: _formKey,
-                              emailController: _emailController,
-                              passwordController: _passwordController,
-                              isPasswordVisible: state.isPasswordVisible,
-                              isLoading: state.isLoading,
-                              onTogglePasswordVisibility:
-                                  controller.togglePasswordVisibility,
-                              onForgotPasswordPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Password reset link sent!'),
+                              // Form Block (Inputs, Validation & Sign In Button)
+                              LoginFormWidget(
+                                formKey: _formKey,
+                                emailController: _emailController,
+                                passwordController: _passwordController,
+                                isPasswordVisible: state.isPasswordVisible,
+                                isLoading: state.isLoading,
+                                onTogglePasswordVisibility:
+                                    controller.togglePasswordVisibility,
+                                onForgotPasswordPressed: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Password reset link sent!'),
+                                    ),
+                                  );
+                                },
+                                onSignInPressed: () => _handleSignIn(controller),
+                              ),
+
+                              const SizedBox(height: AppSpacing.xl),
+
+                              // Social Login Row
+                              const SocialLoginRow(),
+
+                              const Spacer(),
+                              const SizedBox(height: AppSpacing.lg),
+
+                              // Bottom Navigation Link to Register Screen
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  Text(
+                                    AppStrings.dontHaveAccountPrompt,
+                                    style: AppTypography.screenSubtitleStyle(),
                                   ),
-                                );
-                              },
-                              onSignInPressed: () => _handleSignIn(controller),
-                            ),
-
-                            const SizedBox(height: AppSpacing.xl),
-
-                            // Social Login Row
-                            const SocialLoginRow(),
-
-                            const Spacer(),
-                            const SizedBox(height: AppSpacing.lg),
-
-                            // Bottom Navigation Link to Register Screen
-                            Wrap(
-                              alignment: WrapAlignment.center,
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: [
-                                Text(
-                                  AppStrings.dontHaveAccountPrompt,
-                                  style: AppTypography.screenSubtitleStyle(),
-                                ),
-                                GestureDetector(
-                                  onTap: () => context.go(AppRoutes.register),
-                                  child: Text(
-                                    AppStrings.signUpLink,
-                                    style: AppTypography.linkStyle(),
+                                  GestureDetector(
+                                    onTap: _navigateToRegister,
+                                    child: Text(
+                                      AppStrings.signUpLink,
+                                      style: AppTypography.linkStyle(),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
 
-                            const SizedBox(height: AppSpacing.lg),
-                          ],
+                              const SizedBox(height: AppSpacing.lg),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

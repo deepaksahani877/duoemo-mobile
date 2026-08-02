@@ -13,7 +13,7 @@ import '../controllers/register_controller.dart';
 import '../widgets/register_form_widget.dart';
 import '../widgets/register_header_widget.dart';
 
-/// Register Screen implementation with robust form validation following Clean Architecture.
+/// Register Screen implementation with dummy registration redirect to Home screen.
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
 
@@ -72,7 +72,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     if (picked != null) {
       final formattedDate = DateFormat('dd / MM / yyyy').format(picked);
       _dobController.text = formattedDate;
-      // Re-trigger form field validation for date of birth
       _formKey.currentState?.validate();
     }
   }
@@ -101,6 +100,14 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     );
   }
 
+  void _navigateToLogin() {
+    if (context.canPop()) {
+      context.pushReplacement(AppRoutes.login);
+    } else {
+      context.push(AppRoutes.login);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen<RegisterState>(registerControllerProvider, (previous, next) {
@@ -112,119 +119,126 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
           ),
         );
       } else if (next.isSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Account created successfully! Welcome to Duoemo.'),
-            backgroundColor: Colors.green,
-          ),
-        );
+        // Redirect to Home screen on successful dummy registration
+        context.go(AppRoutes.home);
       }
     });
 
     final state = ref.watch(registerControllerProvider);
     final controller = ref.read(registerControllerProvider.notifier);
 
-    return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
-                ),
-                child: IntrinsicHeight(
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxWidth: AppConstants.maxContentWidth,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.lg,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        if (context.canPop()) {
+          context.pop();
+        } else {
+          context.go(AppRoutes.welcome);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundLight,
+        body: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
+                  ),
+                  child: IntrinsicHeight(
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: AppConstants.maxContentWidth,
                         ),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: AppSpacing.sm),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.lg,
+                          ),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: AppSpacing.sm),
 
-                            // Header Block (Back Button & Title)
-                            RegisterHeaderWidget(
-                              onBackPressed: () {
-                                if (context.canPop()) {
-                                  context.pop();
-                                } else {
-                                  context.go(AppRoutes.welcome);
-                                }
-                              },
-                            ),
+                              // Header Block (Back Button & Title)
+                              RegisterHeaderWidget(
+                                onBackPressed: () {
+                                  if (context.canPop()) {
+                                    context.pop();
+                                  } else {
+                                    context.go(AppRoutes.welcome);
+                                  }
+                                },
+                              ),
 
-                            const SizedBox(height: AppSpacing.lg),
+                              const SizedBox(height: AppSpacing.lg),
 
-                            // Form Fields & Sign Up Button
-                            RegisterFormWidget(
-                              formKey: _formKey,
-                              fullNameController: _fullNameController,
-                              emailController: _emailController,
-                              passwordController: _passwordController,
-                              confirmPasswordController:
-                                  _confirmPasswordController,
-                              dobController: _dobController,
-                              isPasswordVisible: state.isPasswordVisible,
-                              isConfirmPasswordVisible:
-                                  state.isConfirmPasswordVisible,
-                              isAgreedToTerms: state.isAgreedToTerms,
-                              isLoading: state.isLoading,
-                              onTogglePasswordVisibility:
-                                  controller.togglePasswordVisibility,
-                              onToggleConfirmPasswordVisibility:
-                                  controller.toggleConfirmPasswordVisibility,
-                              onToggleTermsAgreement:
-                                  controller.toggleTermsAgreement,
-                              onSelectDateOfBirth: () =>
-                                  _selectDateOfBirth(context),
-                              onSignUpPressed: () =>
-                                  _handleSignUp(controller, state),
-                            ),
+                              // Form Fields & Sign Up Button
+                              RegisterFormWidget(
+                                formKey: _formKey,
+                                fullNameController: _fullNameController,
+                                emailController: _emailController,
+                                passwordController: _passwordController,
+                                confirmPasswordController:
+                                    _confirmPasswordController,
+                                dobController: _dobController,
+                                isPasswordVisible: state.isPasswordVisible,
+                                isConfirmPasswordVisible:
+                                    state.isConfirmPasswordVisible,
+                                isAgreedToTerms: state.isAgreedToTerms,
+                                isLoading: state.isLoading,
+                                onTogglePasswordVisibility:
+                                    controller.togglePasswordVisibility,
+                                onToggleConfirmPasswordVisibility:
+                                    controller.toggleConfirmPasswordVisibility,
+                                onToggleTermsAgreement:
+                                    controller.toggleTermsAgreement,
+                                onSelectDateOfBirth: () =>
+                                    _selectDateOfBirth(context),
+                                onSignUpPressed: () =>
+                                    _handleSignUp(controller, state),
+                              ),
 
-                            const SizedBox(height: AppSpacing.xl),
+                              const SizedBox(height: AppSpacing.xl),
 
-                            // Social Login Buttons
-                            const SocialLoginRow(),
+                              // Social Login Buttons
+                              const SocialLoginRow(),
 
-                            const Spacer(),
-                            const SizedBox(height: AppSpacing.lg),
+                              const Spacer(),
+                              const SizedBox(height: AppSpacing.lg),
 
-                            // Bottom Navigation Link to Login Screen
-                            Wrap(
-                              alignment: WrapAlignment.center,
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: [
-                                Text(
-                                  AppStrings.alreadyHaveAccountPrompt,
-                                  style: AppTypography.screenSubtitleStyle(),
-                                ),
-                                GestureDetector(
-                                  onTap: () => context.go(AppRoutes.login),
-                                  child: Text(
-                                    AppStrings.signInLink,
-                                    style: AppTypography.linkStyle(),
+                              // Bottom Navigation Link to Login Screen
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  Text(
+                                    AppStrings.alreadyHaveAccountPrompt,
+                                    style: AppTypography.screenSubtitleStyle(),
                                   ),
-                                ),
-                              ],
-                            ),
+                                  GestureDetector(
+                                    onTap: _navigateToLogin,
+                                    child: Text(
+                                      AppStrings.signInLink,
+                                      style: AppTypography.linkStyle(),
+                                    ),
+                                  ),
+                                ],
+                              ),
 
-                            const SizedBox(height: AppSpacing.lg),
-                          ],
+                              const SizedBox(height: AppSpacing.lg),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
