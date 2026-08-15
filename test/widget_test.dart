@@ -11,6 +11,7 @@ import 'package:duoemo/features/authentication/presentation/pages/forgot_passwor
 import 'package:duoemo/features/authentication/presentation/pages/login_page.dart';
 import 'package:duoemo/features/authentication/presentation/pages/otp_verification_page.dart';
 import 'package:duoemo/features/authentication/presentation/pages/register_page.dart';
+import 'package:duoemo/features/chat/presentation/pages/chat_page.dart';
 import 'package:duoemo/features/home/presentation/pages/home_page.dart';
 import 'package:duoemo/features/welcome/presentation/pages/welcome_page.dart';
 
@@ -218,6 +219,29 @@ void main() {
       expect(find.text(AppStrings.goodEveningGreeting), findsOneWidget);
       expect(find.text(AppStrings.liveConnectionTitle), findsOneWidget);
       expect(find.text(AppStrings.ourStreakTitle), findsOneWidget);
+    });
+
+    testWidgets('Chat screen renders correctly', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 3.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      if (!getIt.isRegistered<LoggerService>()) {
+        await setupDependencies();
+      }
+
+      await tester.pumpWidget(
+        const ProviderScope(
+          child: MaterialApp(
+            home: ChatPage(),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      expect(find.text(AppStrings.chatPartnerName), findsOneWidget);
+      expect(find.text(AppStrings.chatOnlineStatus), findsOneWidget);
     });
   });
 }

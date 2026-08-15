@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../app/constants/app_constants.dart';
+import '../../../../app/router/app_router.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../controllers/home_controller.dart';
@@ -11,7 +13,7 @@ import '../widgets/memory_card_widget.dart';
 import '../widgets/quick_features_grid_widget.dart';
 import '../widgets/streak_card_widget.dart';
 
-/// Pixel-perfect & responsive Home Dashboard screen per instruction.md standards.
+/// Home Dashboard screen.
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
@@ -65,7 +67,12 @@ class HomePage extends ConsumerWidget {
                             const SizedBox(height: AppSpacing.md),
 
                             // Quick Features 6-Card Grid
-                            const QuickFeaturesGridWidget(),
+                            QuickFeaturesGridWidget(
+                              onLoveMessagesTap: () =>
+                                  context.push(AppRoutes.chat),
+                              onVoiceNotesTap: () =>
+                                  context.push(AppRoutes.chat),
+                            ),
 
                             const SizedBox(height: AppSpacing.md),
 
@@ -94,7 +101,12 @@ class HomePage extends ConsumerWidget {
               // Floating Bottom Navigation Bar
               HomeBottomNavWidget(
                 selectedIndex: state.selectedNavIndex,
-                onTabSelected: controller.selectNavTab,
+                onTabSelected: (index) {
+                  controller.selectNavTab(index);
+                  if (index == 2) {
+                    context.push(AppRoutes.chat);
+                  }
+                },
                 onPulseFabPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(

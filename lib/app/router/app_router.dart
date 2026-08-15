@@ -4,10 +4,11 @@ import '../../features/authentication/presentation/pages/forgot_password_page.da
 import '../../features/authentication/presentation/pages/login_page.dart';
 import '../../features/authentication/presentation/pages/otp_verification_page.dart';
 import '../../features/authentication/presentation/pages/register_page.dart';
+import '../../features/chat/presentation/pages/chat_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/welcome/presentation/pages/welcome_page.dart';
 
-/// Centralized route definitions
+/// Centralized route definitions.
 class AppRoutes {
   AppRoutes._();
 
@@ -18,6 +19,7 @@ class AppRoutes {
   static const String otpVerification = '/otp-verification';
   static const String createNewPassword = '/create-new-password';
   static const String home = '/home';
+  static const String chat = '/chat';
 }
 
 final GoRouter appRouter = GoRouter(
@@ -56,6 +58,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.home,
       builder: (context, state) => const HomePage(),
+    ),
+    GoRoute(
+      path: AppRoutes.chat,
+      builder: (context, state) => const ChatPage(),
     ),
   ],
 );

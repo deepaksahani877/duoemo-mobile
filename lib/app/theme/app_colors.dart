@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Centralized color palette for the app
+/// Centralized color palette for the app.
 class AppColors {
   AppColors._();
 
@@ -46,4 +46,9 @@ class AppColors {
   static const Color strengthGreen = Color(0xFF689F38);
   static const Color shieldBg = Color(0xFFFFF7F2);
   static const Color bannerBg = Color(0xFFF9F3EC);
+
+  // Chat Bubbles
+  static const Color userBubbleBg = Color(0xFFFBE8DB);
+  static const Color partnerBubbleBg = Color(0xFFFFFFFF);
+  static const Color voicePlayBg = Color(0xFFF9F0E6);
 }

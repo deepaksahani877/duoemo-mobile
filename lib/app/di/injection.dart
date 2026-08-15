@@ -8,6 +8,11 @@ import '../../features/authentication/domain/usecase/register_usecase.dart';
 import '../../features/authentication/domain/usecase/request_password_reset_usecase.dart';
 import '../../features/authentication/domain/usecase/reset_password_usecase.dart';
 import '../../features/authentication/domain/usecase/verify_otp_usecase.dart';
+import '../../features/chat/data/datasource/chat_local_datasource.dart';
+import '../../features/chat/data/repository/chat_repository_impl.dart';
+import '../../features/chat/domain/repository/chat_repository.dart';
+import '../../features/chat/domain/usecase/get_chat_messages_usecase.dart';
+import '../../features/chat/domain/usecase/send_message_usecase.dart';
 import '../../features/home/data/datasource/home_local_datasource.dart';
 import '../../features/home/data/repository/home_repository_impl.dart';
 import '../../features/home/domain/repository/home_repository.dart';
@@ -19,7 +24,7 @@ import '../../features/welcome/domain/usecase/get_welcome_config.dart';
 
 final getIt = GetIt.instance;
 
-/// Global dependency injection
+/// Global dependency injection setup.
 Future<void> setupDependencies() async {
   // Services
   if (!getIt.isRegistered<LoggerService>()) {
@@ -94,6 +99,28 @@ Future<void> setupDependencies() async {
   if (!getIt.isRegistered<GetHomeDataUseCase>()) {
     getIt.registerLazySingleton<GetHomeDataUseCase>(
       () => GetHomeDataUseCase(getIt<HomeRepository>()),
+    );
+  }
+
+  // Chat Feature
+  if (!getIt.isRegistered<ChatLocalDataSource>()) {
+    getIt.registerLazySingleton<ChatLocalDataSource>(
+      () => ChatLocalDataSourceImpl(),
+    );
+  }
+  if (!getIt.isRegistered<ChatRepository>()) {
+    getIt.registerLazySingleton<ChatRepository>(
+      () => ChatRepositoryImpl(getIt<ChatLocalDataSource>()),
+    );
+  }
+  if (!getIt.isRegistered<GetChatMessagesUseCase>()) {
+    getIt.registerLazySingleton<GetChatMessagesUseCase>(
+      () => GetChatMessagesUseCase(getIt<ChatRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<SendMessageUseCase>()) {
+    getIt.registerLazySingleton<SendMessageUseCase>(
+      () => SendMessageUseCase(getIt<ChatRepository>()),
     );
   }
 }

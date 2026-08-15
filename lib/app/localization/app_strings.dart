@@ -1,4 +1,4 @@
-/// Centralized localized string resource provider
+/// Centralized localized string resource provider.
 class AppStrings {
   AppStrings._();
 
@@ -119,4 +119,13 @@ class AppStrings {
   static const String navMemories = 'Memories';
   static const String navChat = 'Chat';
   static const String navProfile = 'Profile';
+
+  // Chat / Messaging Screen
+  static const String chatPartnerName = 'Neha ❤️';
+  static const String chatOnlineStatus = 'Online';
+  static const String typeMessagePlaceholder = 'Type a message...';
+  static const String voiceNoteDuration = '0:16';
+  static const String dummyMsg1 = 'Hey you! 👋\nHow was your day?';
+  static const String dummyMsg2 = 'It was good when I\ntalked to you ❤️';
+  static const String dummyMsg3 = 'Miss you so much! 🥺';
 }
