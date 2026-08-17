@@ -13,6 +13,7 @@ import 'package:duoemo/features/authentication/presentation/pages/otp_verificati
 import 'package:duoemo/features/authentication/presentation/pages/register_page.dart';
 import 'package:duoemo/features/chat/presentation/pages/chat_page.dart';
 import 'package:duoemo/features/home/presentation/pages/home_page.dart';
+import 'package:duoemo/features/memories/presentation/pages/memories_page.dart';
 import 'package:duoemo/features/welcome/presentation/pages/welcome_page.dart';
 
 void main() {
@@ -242,6 +243,29 @@ void main() {
 
       expect(find.text(AppStrings.chatPartnerName), findsOneWidget);
       expect(find.text(AppStrings.chatOnlineStatus), findsOneWidget);
+    });
+
+    testWidgets('Memories screen renders correctly', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 3.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      if (!getIt.isRegistered<LoggerService>()) {
+        await setupDependencies();
+      }
+
+      await tester.pumpWidget(
+        const ProviderScope(
+          child: MaterialApp(
+            home: MemoriesPage(),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      expect(find.text(AppStrings.ourMemoriesTitle), findsOneWidget);
+      expect(find.text(AppStrings.categoryAll), findsOneWidget);
     });
   });
 }

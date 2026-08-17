@@ -17,6 +17,10 @@ import '../../features/home/data/datasource/home_local_datasource.dart';
 import '../../features/home/data/repository/home_repository_impl.dart';
 import '../../features/home/domain/repository/home_repository.dart';
 import '../../features/home/domain/usecase/get_home_data_usecase.dart';
+import '../../features/memories/data/datasource/memories_local_datasource.dart';
+import '../../features/memories/data/repository/memories_repository_impl.dart';
+import '../../features/memories/domain/repository/memories_repository.dart';
+import '../../features/memories/domain/usecase/get_memories_usecase.dart';
 import '../../features/welcome/data/datasource/welcome_local_datasource.dart';
 import '../../features/welcome/data/repository/welcome_repository_impl.dart';
 import '../../features/welcome/domain/repository/welcome_repository.dart';
@@ -24,7 +28,7 @@ import '../../features/welcome/domain/usecase/get_welcome_config.dart';
 
 final getIt = GetIt.instance;
 
-/// Global dependency injection setup.
+/// Registers application-wide dependencies.
 Future<void> setupDependencies() async {
   // Services
   if (!getIt.isRegistered<LoggerService>()) {
@@ -121,6 +125,23 @@ Future<void> setupDependencies() async {
   if (!getIt.isRegistered<SendMessageUseCase>()) {
     getIt.registerLazySingleton<SendMessageUseCase>(
       () => SendMessageUseCase(getIt<ChatRepository>()),
+    );
+  }
+
+  // Memories Feature
+  if (!getIt.isRegistered<MemoriesLocalDataSource>()) {
+    getIt.registerLazySingleton<MemoriesLocalDataSource>(
+      () => MemoriesLocalDataSourceImpl(),
+    );
+  }
+  if (!getIt.isRegistered<MemoriesRepository>()) {
+    getIt.registerLazySingleton<MemoriesRepository>(
+      () => MemoriesRepositoryImpl(getIt<MemoriesLocalDataSource>()),
+    );
+  }
+  if (!getIt.isRegistered<GetMemoriesUseCase>()) {
+    getIt.registerLazySingleton<GetMemoriesUseCase>(
+      () => GetMemoriesUseCase(getIt<MemoriesRepository>()),
     );
   }
 }

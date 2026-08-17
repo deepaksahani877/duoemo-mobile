@@ -13,7 +13,7 @@ import '../widgets/memory_card_widget.dart';
 import '../widgets/quick_features_grid_widget.dart';
 import '../widgets/streak_card_widget.dart';
 
-/// Home Dashboard screen.
+/// Main home dashboard view.
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
@@ -51,7 +51,7 @@ class HomePage extends ConsumerWidget {
                           children: [
                             const SizedBox(height: AppSpacing.md),
 
-                            // Top Header Block (Greeting & Profile Avatar)
+                            // Top Header Block
                             HomeHeaderWidget(
                               userName: data?.userName ?? 'Suraj ✨',
                             ),
@@ -72,6 +72,8 @@ class HomePage extends ConsumerWidget {
                                   context.push(AppRoutes.chat),
                               onVoiceNotesTap: () =>
                                   context.push(AppRoutes.chat),
+                              onGalleryTap: () =>
+                                  context.push(AppRoutes.memories),
                             ),
 
                             const SizedBox(height: AppSpacing.md),
@@ -103,7 +105,9 @@ class HomePage extends ConsumerWidget {
                 selectedIndex: state.selectedNavIndex,
                 onTabSelected: (index) {
                   controller.selectNavTab(index);
-                  if (index == 2) {
+                  if (index == 1) {
+                    context.push(AppRoutes.memories);
+                  } else if (index == 2) {
                     context.push(AppRoutes.chat);
                   }
                 },
